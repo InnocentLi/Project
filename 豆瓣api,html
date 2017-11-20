@@ -1,0 +1,1676 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<-- 之前是好使的，但是豆瓣api极其不稳定 -->
+<style type="text/css">
+   *{
+   	margin: 0;
+   	border: 0;
+   	list-style: none;
+   }
+	.head{
+		position: relative;
+		background-color: #545652;
+		height: 28px;
+		}
+	.head span{
+		display: block;
+		width: 48px;
+		text-align: center;
+		color: #d5d5d5;
+	    float: left;
+	    line-height: 27px;
+	    font-size: 12px;
+	}
+	.nav-wrap{
+		height: 75px;
+		background-color: #F0F3EF;
+		border: 1px solid #E3E9E2;
+	}
+	.nav-primary{
+		height: 74px;
+		width: 950px;
+		margin: 0 auto;
+	}
+	.nav-secondary{
+		height: 40px;
+		background-color: #F0F3EF;
+	}
+	.inp{
+		background-color: #f40;
+		position: relative;
+		border-radius: 2%;
+		top: 20px;
+		left: 140px;
+		width: 470px;
+        height: 34px;
+	}
+	.dbyy{
+		position: absolute;
+		color: #F29323;
+	}
+	input{
+		width: 100%;
+		height: 100%;
+	}
+	.texter{
+		width: 100%;
+		background-color: black;
+	}
+	.songs{
+		width: 100%;
+	}
+	.song{
+		width: 100%;
+	}
+
+</style>
+	<title>douban</title>
+</head>
+<body>
+
+<p class="head">
+
+
+   <span>豆瓣</span><span>读书</span><span>电影</span><span>音乐</span> <span>同城</span> <span>小组</span> <span>阅读</span><span>FM</span><span>东西</span><span>市集</span><span>更多</span>            
+</p>
+<div class="nav-wrap">
+	<div class="nav-primary">
+       <div class="dbyy">豆瓣音乐</div>
+	   <div class="inp">
+	     	<input type="text" name="" id="find" value placeholder="唱片名、表演者、条码、ISRC">
+	     	    <div class="songs">	
+	     	       <div id="song">
+	     		        
+	     	       </div>
+	     	    </div>
+	     <!-- 	<div class="texter"></div> -->
+	   </div>
+	</div>
+</div>
+<div class="nav-secondary"></div>
+
+<!-- <script type="text/javascript" src="data.js"></script> -->
+<script type="text/javascript" src="jquery-3.1.1.js"></script>
+<script type="text/javascript">
+
+var dataa = {
+    "count": 20,
+    "start": 0,
+    "total": 6228,
+    "musics": [
+        {
+            "rating": {
+                "max": 10,
+                "average": "8.4",
+                "numRaters": 1074,
+                "min": 0
+            },
+            "author": [
+                {
+                    "name": "大橋トリオ"
+                }
+            ],
+            "alt_title": "",
+            "image": "https://img3.doubanio.com\/spic\/s6977572.jpg",
+            "tags": [
+                {
+                    "count": 460,
+                    "name": "大橋トリオ"
+                },
+                {
+                    "count": 266,
+                    "name": "日本"
+                },
+                {
+                    "count": 239,
+                    "name": "Jazz"
+                },
+                {
+                    "count": 78,
+                    "name": "J-Pop"
+                },
+                {
+                    "count": 75,
+                    "name": "2011"
+                },
+                {
+                    "count": 52,
+                    "name": "JPOP"
+                },
+                {
+                    "count": 43,
+                    "name": "男声"
+                },
+                {
+                    "count": 30,
+                    "name": "秦基博"
+                }
+            ],
+            "mobile_link": "https:\/\/m.douban.com\/music\/subject\/6831320\/",
+            "attrs": {
+                "publisher": [
+                    "rhythm zone"
+                ],
+                "singer": [
+                    "大橋トリオ"
+                ],
+                "version": [
+                    "专辑"
+                ],
+                "pubdate": [
+                    "2011-12-07"
+                ],
+                "title": [
+                    "R"
+                ],
+                "media": [
+                    "CD"
+                ],
+                "tracks": [
+                    "01. アネモネが鳴いた\n02. 美しいもの\n03. モンスター feat.秦 基博\n04. シアワセの碧い鳥\n05. Ethnic\n06. ROOTs\n07. the ice\n08. ホルトノキ\n09. The Long Parade\n10. Bing Bang（trio original version）"
+                ],
+                "discs": [
+                    "1"
+                ]
+            },
+            "title": "R",
+            "alt": "https:\/\/music.douban.com\/subject\/6831320\/",
+            "id": "6831320"
+        },
+        {
+            "rating": {
+                "max": 10,
+                "average": "7.4",
+                "numRaters": 29,
+                "min": 0
+            },
+            "author": [
+                {
+                    "name": "四分卫"
+                }
+            ],
+            "alt_title": "",
+            "image": "https://img5.doubanio.com\/spic\/s26864116.jpg",
+            "tags": [
+                {
+                    "count": 10,
+                    "name": "四分卫"
+                },
+                {
+                    "count": 4,
+                    "name": "四分衛"
+                },
+                {
+                    "count": 4,
+                    "name": "Rock"
+                },
+                {
+                    "count": 2,
+                    "name": "台湾"
+                },
+                {
+                    "count": 2,
+                    "name": "2005"
+                },
+                {
+                    "count": 2,
+                    "name": "Indie"
+                },
+                {
+                    "count": 1,
+                    "name": "男声"
+                },
+                {
+                    "count": 1,
+                    "name": "组合"
+                }
+            ],
+            "mobile_link": "https:\/\/m.douban.com\/music\/subject\/1916928\/",
+            "attrs": {
+                "publisher": [
+                    "角头音乐"
+                ],
+                "singer": [
+                    "四分卫"
+                ],
+                "pubdate": [
+                    "2005年6月"
+                ],
+                "title": [
+                    "R"
+                ],
+                "media": [
+                    "CD"
+                ],
+                "tracks": [
+                    "01 风往哪儿吹\n02 好想弹吉他\n03 R"
+                ]
+            },
+            "title": "R",
+            "alt": "https:\/\/music.douban.com\/subject\/1916928\/",
+            "id": "1916928"
+        },
+        {
+            "rating": {
+                "max": 10,
+                "average": "7.0",
+                "numRaters": 63,
+                "min": 0
+            },
+            "author": [
+                {
+                    "name": "R"
+                },
+                {
+                    "name": "R Coseboom"
+                }
+            ],
+            "alt_title": "",
+            "image": "https://img3.doubanio.com\/spic\/s2156731.jpg",
+            "tags": [
+                {
+                    "count": 16,
+                    "name": "trip-hop"
+                },
+                {
+                    "count": 12,
+                    "name": "Ambient"
+                },
+                {
+                    "count": 8,
+                    "name": "indie"
+                },
+                {
+                    "count": 6,
+                    "name": "女声"
+                },
+                {
+                    "count": 5,
+                    "name": "Trip-Hop"
+                },
+                {
+                    "count": 4,
+                    "name": "R-R.Coseboom"
+                },
+                {
+                    "count": 3,
+                    "name": "TripHop"
+                },
+                {
+                    "count": 2,
+                    "name": "封面儿"
+                }
+            ],
+            "mobile_link": "https:\/\/m.douban.com\/music\/subject\/1996331\/",
+            "attrs": {
+                "publisher": [
+                    "Dynamophone Records"
+                ],
+                "singer": [
+                    "R",
+                    "R Coseboom"
+                ],
+                "discs": [
+                    "1"
+                ],
+                "pubdate": [
+                    "2006-08-08"
+                ],
+                "title": [
+                    "Beneath Trembling Lanterns"
+                ],
+                "media": [
+                    "CD"
+                ],
+                "tracks": [
+                    "1.\nHollywood Ending 03:34\n2.\nBaby Beating Heart 03:55\n3.\nSoft Breasts And Ice Cream 07:01\n4.\nEejit 07:02\n5.\nShopworn 07:12\n6.\nVisitor Hummingbird 03:53\n7.\nArrhythmia 05:46\n8.\nLittle Dust Wing 07:06\n9.\nThese Short Messages 07:47"
+                ],
+                "version": [
+                    "专辑"
+                ]
+            },
+            "title": "Beneath Trembling Lanterns",
+            "alt": "https:\/\/music.douban.com\/subject\/1996331\/",
+            "id": "1996331"
+        },
+        {
+            "rating": {
+                "max": 10,
+                "average": 0,
+                "numRaters": 1,
+                "min": 0
+            },
+            "author": [
+                {
+                    "name": "Berganza"
+                },
+                {
+                    "name": "Villarroel"
+                },
+                {
+                    "name": "Perelstein"
+                },
+                {
+                    "name": "Domingo"
+                },
+                {
+                    "name": "R"
+                }
+            ],
+            "alt_title": "",
+            "image": "https://img3.doubanio.com\/spic\/s3318504.jpg",
+            "tags": [
+                {
+                    "count": 1,
+                    "name": "JuanPons"
+                },
+                {
+                    "count": 1,
+                    "name": "Penella"
+                },
+                {
+                    "count": 1,
+                    "name": "PlacidoDomingo"
+                },
+                {
+                    "count": 1,
+                    "name": "TeresaBerganza"
+                },
+                {
+                    "count": 1,
+                    "name": "classical"
+                },
+                {
+                    "count": 1,
+                    "name": "佩内拉"
+                }
+            ],
+            "mobile_link": "https:\/\/m.douban.com\/music\/subject\/3261807\/",
+            "attrs": {
+                "publisher": [
+                    "Deutsche Grammophon"
+                ],
+                "singer": [
+                    "Berganza",
+                    "Villarroel",
+                    "Perelstein",
+                    "Domingo",
+                    "R"
+                ],
+                "version": [
+                    "Import"
+                ],
+                "pubdate": [
+                    "1998-10-05"
+                ],
+                "title": [
+                    "Penella: El Gato Montes"
+                ],
+                "media": [
+                    "Audio CD"
+                ],
+                "discs": [
+                    "2"
+                ]
+            },
+            "title": "Penella: El Gato Montes",
+            "alt": "https:\/\/music.douban.com\/subject\/3261807\/",
+            "id": "3261807"
+        },
+        {
+            "rating": {
+                "max": 10,
+                "average": 0,
+                "numRaters": 3,
+                "min": 0
+            },
+            "author": [
+                {
+                    "name": "R"
+                }
+            ],
+            "alt_title": "",
+            "image": "https://img3.doubanio.com\/spic\/s7055560.jpg",
+            "tags": [
+                
+            ],
+            "mobile_link": "https:\/\/m.douban.com\/music\/subject\/10461054\/",
+            "attrs": {
+                "publisher": [
+                    "Ron's Studio"
+                ],
+                "singer": [
+                    "R"
+                ],
+                "pubdate": [
+                    "2012"
+                ],
+                "title": [
+                    "An old little story"
+                ],
+                "media": [
+                    "数字(Digital)"
+                ],
+                "tracks": [
+                    "An old little story\nMy little little\nOutro"
+                ],
+                "version": [
+                    "单曲"
+                ]
+            },
+            "title": "An old little story",
+            "alt": "https:\/\/music.douban.com\/subject\/10461054\/",
+            "id": "10461054"
+        },
+        {
+            "rating": {
+                "max": 10,
+                "average": 0,
+                "numRaters": 1,
+                "min": 0
+            },
+            "author": [
+                {
+                    "name": "M"
+                },
+                {
+                    "name": "A"
+                },
+                {
+                    "name": "R"
+                },
+                {
+                    "name": "S"
+                }
+            ],
+            "alt_title": "",
+            "image": "https://img3.doubanio.com\/spic\/s3723112.jpg",
+            "tags": [
+                {
+                    "count": 1,
+                    "name": "Acid-House"
+                },
+                {
+                    "count": 1,
+                    "name": "Alternative"
+                }
+            ],
+            "mobile_link": "https:\/\/m.douban.com\/music\/subject\/3665616\/",
+            "attrs": {
+                "publisher": [
+                    "4AD"
+                ],
+                "singer": [
+                    "M",
+                    "A",
+                    "R",
+                    "S"
+                ],
+                "discs": [
+                    "1"
+                ],
+                "pubdate": [
+                    "1987-01-01"
+                ],
+                "title": [
+                    "Pump Up the Volume"
+                ],
+                "media": [
+                    "Audio CD"
+                ],
+                "tracks": [
+                    "Pump up the Volume",
+                    "Pump up the Volume [Bonus Beat]",
+                    "Anitina (The First Time I See She Dance)",
+                    "Pump Up the Volume [Radio Edit]",
+                    "Anitina"
+                ],
+                "version": [
+                    "Single"
+                ]
+            },
+            "title": "Pump Up the Volume",
+            "alt": "https:\/\/music.douban.com\/subject\/3665616\/",
+            "id": "3665616"
+        },
+        {
+            "rating": {
+                "max": 10,
+                "average": 0,
+                "numRaters": 0,
+                "min": 0
+            },
+            "author": [
+                {
+                    "name": "DJ DUCT"
+                },
+                {
+                    "name": "Inden"
+                },
+                {
+                    "name": "R"
+                },
+                {
+                    "name": "J-Live"
+                },
+                {
+                    "name": "Fat Jon"
+                }
+            ],
+            "alt_title": "",
+            "image": "https://img5.doubanio.com\/spic\/s4427136.jpg",
+            "tags": [
+                
+            ],
+            "mobile_link": "https:\/\/m.douban.com\/music\/subject\/3996134\/",
+            "attrs": {
+                "publisher": [
+                    "Libyus Music"
+                ],
+                "singer": [
+                    "DJ DUCT",
+                    "Inden",
+                    "R",
+                    "J-Live",
+                    "Fat Jon"
+                ],
+                "pubdate": [
+                    "2007-04-25"
+                ],
+                "title": [
+                    "BINDWEED"
+                ],
+                "media": [
+                    "CD"
+                ],
+                "discs": [
+                    "1"
+                ]
+            },
+            "title": "BINDWEED",
+            "alt": "https:\/\/music.douban.com\/subject\/3996134\/",
+            "id": "3996134"
+        },
+        {
+            "rating": {
+                "max": 10,
+                "average": 0,
+                "numRaters": 1,
+                "min": 0
+            },
+            "author": [
+                {
+                    "name": "Pierre Boulez"
+                },
+                {
+                    "name": "J. Shirley-Quirk"
+                },
+                {
+                    "name": "P. Boulez"
+                },
+                {
+                    "name": "R"
+                }
+            ],
+            "alt_title": "",
+            "image": "https://img3.doubanio.com\/spic\/s3157934.jpg",
+            "tags": [
+                
+            ],
+            "mobile_link": "https:\/\/m.douban.com\/music\/subject\/3128397\/",
+            "attrs": {
+                "publisher": [
+                    "Scl (Sony BMG)"
+                ],
+                "singer": [
+                    "Pierre Boulez",
+                    "J. Shirley-Quirk",
+                    "P. Boulez",
+                    "R"
+                ],
+                "discs": [
+                    "2"
+                ],
+                "pubdate": [
+                    "1990-04-06"
+                ],
+                "title": [
+                    "Boulez-Edition: Schönberg (Das Chorwerk) [UK-Import]"
+                ],
+                "media": [
+                    "Audio CD"
+                ],
+                "tracks": [
+                    "Friede auf Erden für gemischten Chor a capella Op. 13",
+                    "Kol nidre für Sprecher, gemischten Chor und Orchester Op. 39",
+                    "Es gingen zwei Gespielen gut",
+                    "Der Mai tritt ein mit Freuden",
+                    "Mein Herz in steten Treuen",
+                    "Wenn der schwer Gedrückte klagt",
+                    "O daß der Sinnen doch so viele sind",
+                    "Es gingen zwei Gespielen gut",
+                    "Herzlieblich Lieb, durch Scheiden",
+                    "Schein uns, du liebe Sonne",
+                    "Unentrinnbar",
+                    "Du sollst nicht, du mußt",
+                    "Mond und Menschen",
+                    "Der Wunsch des Liebhabers",
+                    "Am Scheideweg",
+                    "Vielseitigkeit",
+                    "Der neue Klassizismus",
+                    "Hemmung",
+                    "Das Gesetz",
+                    "Ausdrucksweise",
+                    "Glück",
+                    "Landsknechte",
+                    "Verbundenheit",
+                    "Dreimal tausend Jahre für gemischten Chor a capella Op. 50a",
+                    "Psalm 130 für gemischten Chor a capella Op. 50 b",
+                    "Moderner Psalm Nr. 1 für Sprecher, gemischten Chor und Orchester Op. 50 c",
+                    "Ein Überlebender aus Warschau für Sprecher, Männerchor und Orchester Op. 46"
+                ],
+                "version": [
+                    "Import",
+                    "Doppel-CD"
+                ]
+            },
+            "title": "Boulez-Edition: Schönberg (Das Chorwerk) [UK-Import]",
+            "alt": "https:\/\/music.douban.com\/subject\/3128397\/",
+            "id": "3128397"
+        },
+        {
+            "rating": {
+                "max": 10,
+                "average": 0,
+                "numRaters": 0,
+                "min": 0
+            },
+            "author": [
+                {
+                    "name": "Wruhme"
+                },
+                {
+                    "name": "Wighnomy Brothers"
+                },
+                {
+                    "name": "R"
+                }
+            ],
+            "alt_title": "",
+            "image": "https://img5.doubanio.com\/spic\/s11110056.jpg",
+            "tags": [
+                
+            ],
+            "mobile_link": "https:\/\/m.douban.com\/music\/subject\/3143258\/",
+            "attrs": {
+                "publisher": [
+                    "Musik Krause"
+                ],
+                "singer": [
+                    "Wruhme",
+                    "Wighnomy Brothers",
+                    "R"
+                ],
+                "version": [
+                    "EP"
+                ],
+                "pubdate": [
+                    "2004-01-01"
+                ],
+                "title": [
+                    "Poly-Tikk [12\" VINYL]"
+                ],
+                "media": [
+                    "Vinyl"
+                ],
+                "discs": [
+                    "1"
+                ]
+            },
+            "title": "Poly-Tikk [12\" VINYL]",
+            "alt": "https:\/\/music.douban.com\/subject\/3143258\/",
+            "id": "3143258"
+        },
+        {
+            "rating": {
+                "max": 10,
+                "average": "8.3",
+                "numRaters": 915,
+                "min": 0
+            },
+            "author": [
+                {
+                    "name": "R Kelly"
+                }
+            ],
+            "alt_title": "",
+            "image": "https://img3.doubanio.com\/spic\/s4542314.jpg",
+            "tags": [
+                {
+                    "count": 257,
+                    "name": "R&B"
+                },
+                {
+                    "count": 190,
+                    "name": "R.Kelly"
+                },
+                {
+                    "count": 70,
+                    "name": "美国"
+                },
+                {
+                    "count": 62,
+                    "name": "2010"
+                },
+                {
+                    "count": 39,
+                    "name": "欧美"
+                },
+                {
+                    "count": 38,
+                    "name": "R&B\/Soul"
+                },
+                {
+                    "count": 17,
+                    "name": "Pop"
+                },
+                {
+                    "count": 14,
+                    "name": "Contemporary-R&B"
+                }
+            ],
+            "mobile_link": "https:\/\/m.douban.com\/music\/subject\/5364143\/",
+            "attrs": {
+                "publisher": [
+                    "Jive"
+                ],
+                "singer": [
+                    "R Kelly"
+                ],
+                "version": [
+                    "专辑"
+                ],
+                "pubdate": [
+                    "2010-12-14"
+                ],
+                "title": [
+                    "Love Letter"
+                ],
+                "media": [
+                    "Audio CD"
+                ],
+                "tracks": [
+                    "Love Letter Prelude",
+                    "Love Letter",
+                    "Number One Hit",
+                    "Not Feelin' The Love",
+                    "Lost In Your Love",
+                    "Just Can't Get Enough",
+                    "Taxi Cab",
+                    "Radio Message",
+                    "When A Woman Loves",
+                    "Love Is featuring K. Michelle",
+                    "Just Like That",
+                    "Music Must Be A Lady",
+                    "A Love Letter Christmas",
+                    "How Do I Tell Her"
+                ],
+                "discs": [
+                    "1"
+                ]
+            },
+            "title": "Love Letter",
+            "alt": "https:\/\/music.douban.com\/subject\/5364143\/",
+            "id": "5364143"
+        },
+        {
+            "rating": {
+                "max": 10,
+                "average": "8.3",
+                "numRaters": 335,
+                "min": 0
+            },
+            "author": [
+                {
+                    "name": "R Kelly"
+                }
+            ],
+            "alt_title": "",
+            "image": "https://img3.doubanio.com\/spic\/s4475774.jpg",
+            "tags": [
+                {
+                    "count": 107,
+                    "name": "R&B"
+                },
+                {
+                    "count": 32,
+                    "name": "RKelly"
+                },
+                {
+                    "count": 23,
+                    "name": "Soul"
+                },
+                {
+                    "count": 23,
+                    "name": "美国"
+                },
+                {
+                    "count": 14,
+                    "name": "Urban"
+                },
+                {
+                    "count": 14,
+                    "name": "R.Kelly"
+                },
+                {
+                    "count": 13,
+                    "name": "欧美"
+                },
+                {
+                    "count": 12,
+                    "name": "1998"
+                }
+            ],
+            "mobile_link": "https:\/\/m.douban.com\/music\/subject\/1460085\/",
+            "attrs": {
+                "publisher": [
+                    "Jive"
+                ],
+                "singer": [
+                    "R Kelly"
+                ],
+                "version": [
+                    "专辑"
+                ],
+                "pubdate": [
+                    "1998-11-10"
+                ],
+                "title": [
+                    "R."
+                ],
+                "media": [
+                    "CD"
+                ],
+                "tracks": [
+                    "Disc one\n01. Home Alone (Featuring Keith Murray)\n02. Spendin' Money\n03. If I'm Wit You\n04. Half On A Baby\n05. When a Woman's Fed Up\n06. Get Up On A Room\n07. One Man\n08. We Ride  (Featuring Jay-Z, Cam'ron, Vegas Cats & Noreaga)\n09. The Opera\n10. The Interview (Featuring Suzanne LeMignot)\n11. Only the Loot Can Make Me Happy\n12. Don't Put Me Out\n13. Suicide\n14. Etcetera\n15. If I Could Turn Back the Hands of Time\n16. What I Feel\/Issues\n17. I Believe I Can Fly\nDisc Two\n01. The Chase\n02. V.I.P.\n03. Did You Ever Think\n04. Dollar Bill  (featuring Foxy Brown)\n05. Reality\n06. 2nd Kelly\n07. Ghetto Queen (featuring Crucial Conflict)\n08. Down Low Double Life\n09. Looking For Love\n10. Dancing With A Rich Man\n11. I'm Your Angel (Duet With Céline Dion)\n12. Money Makes The World Go Round (Featuring Nas)\n13. I Believe I Can Fly"
+                ],
+                "discs": [
+                    "2"
+                ]
+            },
+            "title": "R.",
+            "alt": "https:\/\/music.douban.com\/subject\/1460085\/",
+            "id": "1460085"
+        },
+        {
+            "rating": {
+                "max": 10,
+                "average": "8.0",
+                "numRaters": 310,
+                "min": 0
+            },
+            "author": [
+                {
+                    "name": "邪恶少年EB"
+                },
+                {
+                    "name": "R-Slug"
+                }
+            ],
+            "alt_title": "",
+            "image": "https://img3.doubanio.com\/spic\/s1943801.jpg",
+            "tags": [
+                {
+                    "count": 57,
+                    "name": "hip-hop"
+                },
+                {
+                    "count": 45,
+                    "name": "邪恶少年"
+                },
+                {
+                    "count": 29,
+                    "name": "邪恶少年EB"
+                },
+                {
+                    "count": 18,
+                    "name": "EB"
+                },
+                {
+                    "count": 16,
+                    "name": "中国说唱"
+                },
+                {
+                    "count": 13,
+                    "name": "中文说唱"
+                },
+                {
+                    "count": 9,
+                    "name": "rap"
+                },
+                {
+                    "count": 8,
+                    "name": "中国"
+                }
+            ],
+            "mobile_link": "https:\/\/m.douban.com\/music\/subject\/1937176\/",
+            "attrs": {
+                "publisher": [
+                    "Self-Released"
+                ],
+                "singer": [
+                    "邪恶少年EB",
+                    "R-Slug"
+                ],
+                "version": [
+                    "专辑"
+                ],
+                "pubdate": [
+                    "2005-06-10"
+                ],
+                "title": [
+                    "序章"
+                ],
+                "media": [
+                    "CD"
+                ],
+                "tracks": [
+                    "1：序曲 Intro\n2：街头球魂\n3：叛徒\n4：Uh-huh\n5：邪恶少年\n6：无敌\n7：有的人\n8：分清主次 Skit\n9：我HipHop\n10：写在2001年4月30日\n11：自己\n12：奇迹\n13：挣扎\n14：我的演说\n15：错爱\n16：尾声 Outro"
+                ],
+                "discs": [
+                    "1"
+                ]
+            },
+            "title": "序章",
+            "alt": "https:\/\/music.douban.com\/subject\/1937176\/",
+            "id": "1937176"
+        },
+        {
+            "rating": {
+                "max": 10,
+                "average": "8.5",
+                "numRaters": 131,
+                "min": 0
+            },
+            "author": [
+                {
+                    "name": "Lordmo R"
+                }
+            ],
+            "alt_title": "",
+            "image": "https://img5.doubanio.com\/spic\/s4451746.jpg",
+            "tags": [
+                {
+                    "count": 93,
+                    "name": "中国黑人"
+                },
+                {
+                    "count": 32,
+                    "name": "南征北战"
+                },
+                {
+                    "count": 30,
+                    "name": "中国最牛逼"
+                },
+                {
+                    "count": 28,
+                    "name": "中文说唱"
+                },
+                {
+                    "count": 20,
+                    "name": "说唱"
+                },
+                {
+                    "count": 18,
+                    "name": "hiphop"
+                },
+                {
+                    "count": 17,
+                    "name": "Chinese-Rap"
+                },
+                {
+                    "count": 13,
+                    "name": "Hip-Hop"
+                }
+            ],
+            "mobile_link": "https:\/\/m.douban.com\/music\/subject\/5171127\/",
+            "attrs": {
+                "publisher": [
+                    "南征北战"
+                ],
+                "singer": [
+                    "Lordmo R"
+                ],
+                "version": [
+                    "专辑"
+                ],
+                "pubdate": [
+                    "2010-08-20"
+                ],
+                "title": [
+                    "中国黑人"
+                ],
+                "media": [
+                    "CD"
+                ],
+                "tracks": [
+                    "01.2008 (Intro)\n02.每天每夜 Feat. 陈雅函, FK Moses\n03.你是我的一切\n04.不再\n05.佤山(Interlude)\n06.叮叮当\n07.梦 Feat. Paul\n08.赤裸的灵魂 Feat. FK Moses, Wootacc\n09.黑与白\n10.单行空间 Feat. FK Moses\n11.你如此美丽 Feat. FK Moses, Paul\n12.等着我飞去(Interlude)\n13.心 Feat. 幼稚园杀手\n14.现在\n15.微笑(Album Version) Feat. FK Moses, Chyna Apple, 陈雅函, 沈懿, 醉人, 茶米\n16.沧桑(Interlude)\n17.感动 Feat. Kwok Kin, Qarakhan, 沈懿, FK Moses, Crazy Chef, Naggy, Madking, 醉人, Iceflow\n18.2007 (Outro)"
+                ],
+                "discs": [
+                    "1"
+                ]
+            },
+            "title": "中国黑人",
+            "alt": "https:\/\/music.douban.com\/subject\/5171127\/",
+            "id": "5171127"
+        },
+        {
+            "rating": {
+                "max": 10,
+                "average": "8.5",
+                "numRaters": 183,
+                "min": 0
+            },
+            "author": [
+                {
+                    "name": "downer"
+                },
+                {
+                    "name": "丹娜"
+                },
+                {
+                    "name": "d o w n e r"
+                }
+            ],
+            "alt_title": "",
+            "image": "https://img1.doubanio.com\/spic\/s23239287.jpg",
+            "tags": [
+                {
+                    "count": 61,
+                    "name": "香港"
+                },
+                {
+                    "count": 56,
+                    "name": "Shoegaze"
+                },
+                {
+                    "count": 32,
+                    "name": "2012"
+                },
+                {
+                    "count": 31,
+                    "name": "Post-Rock"
+                },
+                {
+                    "count": 27,
+                    "name": "downer"
+                },
+                {
+                    "count": 18,
+                    "name": "DreamPop"
+                },
+                {
+                    "count": 17,
+                    "name": "IndieRock"
+                },
+                {
+                    "count": 14,
+                    "name": "Indie"
+                }
+            ],
+            "mobile_link": "https:\/\/m.douban.com\/music\/subject\/20285711\/",
+            "attrs": {
+                "publisher": [
+                    "黑市音樂"
+                ],
+                "singer": [
+                    "downer",
+                    "丹娜",
+                    "d o w n e r"
+                ],
+                "version": [
+                    "专辑"
+                ],
+                "pubdate": [
+                    "2012-11-15"
+                ],
+                "title": [
+                    "swallowyourshadow"
+                ],
+                "media": [
+                    "CD"
+                ],
+                "tracks": [
+                    "1. IF\n2. THE BLESSED GIRL\n3. SILENCE\n4. BEFORE SUNRISE\n5. GOODBYE\n6. FAREWELL\n7. DANCING WITH MY OWN SHADOW\n8. SWALLOW"
+                ],
+                "discs": [
+                    "1"
+                ]
+            },
+            "title": "swallowyourshadow",
+            "alt": "https:\/\/music.douban.com\/subject\/20285711\/",
+            "id": "20285711"
+        },
+        {
+            "rating": {
+                "max": 10,
+                "average": "7.0",
+                "numRaters": 175,
+                "min": 0
+            },
+            "author": [
+                {
+                    "name": "Jay-Z"
+                },
+                {
+                    "name": "R Kelly"
+                }
+            ],
+            "alt_title": "",
+            "image": "https://img5.doubanio.com\/spic\/s2544446.jpg",
+            "tags": [
+                {
+                    "count": 30,
+                    "name": "R&B"
+                },
+                {
+                    "count": 30,
+                    "name": "JAY-Z"
+                },
+                {
+                    "count": 16,
+                    "name": "hip-hop"
+                },
+                {
+                    "count": 13,
+                    "name": "Rap"
+                },
+                {
+                    "count": 5,
+                    "name": "Urban"
+                },
+                {
+                    "count": 5,
+                    "name": "美国"
+                },
+                {
+                    "count": 5,
+                    "name": "欧美"
+                },
+                {
+                    "count": 4,
+                    "name": "pop"
+                }
+            ],
+            "mobile_link": "https:\/\/m.douban.com\/music\/subject\/1769462\/",
+            "attrs": {
+                "publisher": [
+                    "Roc-a-Fella"
+                ],
+                "singer": [
+                    "Jay-Z",
+                    "R Kelly"
+                ],
+                "discs": [
+                    "1"
+                ],
+                "pubdate": [
+                    "2002-03-19"
+                ],
+                "title": [
+                    "The Best of Both Worlds"
+                ],
+                "media": [
+                    "CD"
+                ],
+                "tracks": [
+                    "1. The Best Of Both Worlds\n2. Take You Home With Me A.K.A. Body\n3. Break Up To Make Up\n4. It Ain't Personal\n5. The Streets\n6. Green Light\n7. Naked\n8. Shake Ya Body\n9. Somebody's Girl\n10. Get This Money\n11. Shorty\n12. Honey\n13. P***y"
+                ],
+                "version": [
+                    "专辑"
+                ]
+            },
+            "title": "The Best of Both Worlds",
+            "alt": "https:\/\/music.douban.com\/subject\/1769462\/",
+            "id": "1769462"
+        },
+        {
+            "rating": {
+                "max": 10,
+                "average": "9.3",
+                "numRaters": 64,
+                "min": 0
+            },
+            "author": [
+                {
+                    "name": "Lordmo R"
+                }
+            ],
+            "alt_title": "",
+            "image": "https://img3.doubanio.com\/spic\/s4451743.jpg",
+            "tags": [
+                {
+                    "count": 21,
+                    "name": "中国最牛逼"
+                },
+                {
+                    "count": 12,
+                    "name": "Rap"
+                },
+                {
+                    "count": 7,
+                    "name": "“总之他们rap中文”"
+                },
+                {
+                    "count": 7,
+                    "name": "微笑"
+                },
+                {
+                    "count": 6,
+                    "name": "喜欢"
+                },
+                {
+                    "count": 4,
+                    "name": "Hip-Hop"
+                },
+                {
+                    "count": 4,
+                    "name": "Lordmo"
+                },
+                {
+                    "count": 2,
+                    "name": "中文说唱"
+                }
+            ],
+            "mobile_link": "https:\/\/m.douban.com\/music\/subject\/5171209\/",
+            "attrs": {
+                "publisher": [
+                    "南征北战"
+                ],
+                "singer": [
+                    "Lordmo R"
+                ],
+                "discs": [
+                    "1"
+                ],
+                "pubdate": [
+                    "2010-08-20"
+                ],
+                "title": [
+                    "微笑"
+                ],
+                "media": [
+                    "CD"
+                ],
+                "tracks": [
+                    "01.微笑(Album Version) Feat. FK Moses, Chyna Apple, 陈雅函, 沈懿, 醉人, 茶米\n02.微笑(Xinjiang Version) Feat. FK Moses, Paul, Nabi, Crazy Chef, Ali, 醉人\n03.微笑(Hardcore Version) Feat. Naggy, Big Snake, 仁杰旺布, 醉人, 沈懿\n04.微笑(Remix) Feat. FK Moses, PD Doggy, Era, MC Lier, Napoleon Da Legend\n05.微笑(Original Instrumental)\n06.微笑(Remix Instrumental)\n07.微笑(Remix Instrumental w. Chorus)\n08.微笑(Album Version Acapella)"
+                ],
+                "version": [
+                    "EP"
+                ]
+            },
+            "title": "微笑",
+            "alt": "https:\/\/music.douban.com\/subject\/5171209\/",
+            "id": "5171209"
+        },
+        {
+            "rating": {
+                "max": 10,
+                "average": "8.2",
+                "numRaters": 41,
+                "min": 0
+            },
+            "author": [
+                {
+                    "name": "Dj Mitsu The Beats \/ Dj Mu-r"
+                }
+            ],
+            "alt_title": "",
+            "image": "https://img3.doubanio.com\/spic\/s3252311.jpg",
+            "tags": [
+                {
+                    "count": 22,
+                    "name": "jazzyhiphop"
+                },
+                {
+                    "count": 4,
+                    "name": "日本"
+                },
+                {
+                    "count": 3,
+                    "name": "Sound"
+                },
+                {
+                    "count": 3,
+                    "name": "hip-hop"
+                },
+                {
+                    "count": 3,
+                    "name": "Maneuvers"
+                },
+                {
+                    "count": 2,
+                    "name": "Mitsu"
+                },
+                {
+                    "count": 2,
+                    "name": "jazzy-hiphop"
+                },
+                {
+                    "count": 2,
+                    "name": "underground"
+                }
+            ],
+            "mobile_link": "https:\/\/m.douban.com\/music\/subject\/3170154\/",
+            "attrs": {
+                "publisher": [
+                    "jazzysport"
+                ],
+                "singer": [
+                    "Dj Mitsu The Beats \/ Dj Mu-r"
+                ],
+                "pubdate": [
+                    "2008年08月23日"
+                ],
+                "title": [
+                    "Sound Maneuvers Classics"
+                ],
+                "media": [
+                    "CD"
+                ],
+                "tracks": [
+                    "01 DJ Mitsu the Beats “So.Ma. Theme #2\"\n02 Quasimoto “Jazz Catz”\n03 Maspyke “The Gong Show”\n04 Kali Wild “Rhythmatic Explosion”\n05 Phat Kat “Microphone Master”\n06 Slum Village “Fantastic Vol.2 (Intro)”\n07 Slum Village feat. Pete Rock “Once Upon A Time”\n08 Declaime feat. Lootpack “The Movement”\n09 Jaylib “Champion Sound”\n10 Pete Rock “Get Involved”\n11 Jneiro Jarel feat. Dr. Who Dat? “Doinis !!”\n12 I.N.I. “Square One”\n13 Encore “Love & Hate (The Nextmen Remix)”\n14 grooveman Spot a.k.a. DJ Kou-G feat. M.E.D. “Turn It Up”\n15 DJ Mitsu the Beats feat. Miwa “Miwa Says (Breakthrough Remix Inst)”\n16 Jay Dee “Think Twice”\n17 Bottom Fly “Riverside Crates”\n18 Kid Sublime feat. U-Gene “This Way”\n19 Platinum Pied Pipers feat. Zeno “Fever”\n20 Bahamadia feat. Dwele “Philadelphia”\n21 DJ Mitsu the Beats feat. Dwele “Right Here”"
+                ]
+            },
+            "title": "Sound Maneuvers Classics",
+            "alt": "https:\/\/music.douban.com\/subject\/3170154\/",
+            "id": "3170154"
+        },
+        {
+            "rating": {
+                "max": 10,
+                "average": "7.5",
+                "numRaters": 59,
+                "min": 0
+            },
+            "author": [
+                {
+                    "name": "R Kelly & Public Announcement"
+                }
+            ],
+            "alt_title": "",
+            "image": "https://img1.doubanio.com\/spic\/s4537519.jpg",
+            "tags": [
+                {
+                    "count": 22,
+                    "name": "R&B"
+                },
+                {
+                    "count": 9,
+                    "name": "R.Kelly"
+                },
+                {
+                    "count": 7,
+                    "name": "New-Jack-Swing"
+                },
+                {
+                    "count": 4,
+                    "name": "美国"
+                },
+                {
+                    "count": 4,
+                    "name": "1992"
+                },
+                {
+                    "count": 3,
+                    "name": "RKelly"
+                },
+                {
+                    "count": 2,
+                    "name": "urban"
+                },
+                {
+                    "count": 2,
+                    "name": "欧美"
+                }
+            ],
+            "mobile_link": "https:\/\/m.douban.com\/music\/subject\/1828078\/",
+            "attrs": {
+                "publisher": [
+                    "Jive"
+                ],
+                "singer": [
+                    "R Kelly & Public Announcement"
+                ],
+                "pubdate": [
+                    "1992-01-14"
+                ],
+                "title": [
+                    "Born Into the 90's"
+                ],
+                "media": [
+                    "Audio CD"
+                ],
+                "tracks": [
+                    "She's Loving Me",
+                    "She's Got That Vibe",
+                    "Definition of a Hotti",
+                    "I Know What You Need",
+                    "Keep It Street",
+                    "Born into the 90's",
+                    "Slow Dance",
+                    "Dedicated",
+                    "Honey Love",
+                    "Hangin' Out",
+                    "Hey Love (Can I Have a Word) [*]"
+                ],
+                "discs": [
+                    "1"
+                ]
+            },
+            "title": "Born Into the 90's",
+            "alt": "https:\/\/music.douban.com\/subject\/1828078\/",
+            "id": "1828078"
+        },
+        {
+            "rating": {
+                "max": 10,
+                "average": "7.3",
+                "numRaters": 17,
+                "min": 0
+            },
+            "author": [
+                {
+                    "name": "DJ Mitsu The Beats & DJ Mu-R"
+                }
+            ],
+            "alt_title": "",
+            "image": "https://img3.doubanio.com\/spic\/s3173514.jpg",
+            "tags": [
+                {
+                    "count": 9,
+                    "name": "JazzyHiphop"
+                },
+                {
+                    "count": 3,
+                    "name": "hiphop"
+                },
+                {
+                    "count": 2,
+                    "name": "mixtabe"
+                },
+                {
+                    "count": 2,
+                    "name": "Hip-Hop"
+                },
+                {
+                    "count": 1,
+                    "name": "jazz-hiphop"
+                },
+                {
+                    "count": 1,
+                    "name": "DJ"
+                },
+                {
+                    "count": 1,
+                    "name": "Jazzy-Hiphop"
+                },
+                {
+                    "count": 1,
+                    "name": "Jazz"
+                }
+            ],
+            "mobile_link": "https:\/\/m.douban.com\/music\/subject\/3141580\/",
+            "attrs": {
+                "publisher": [
+                    "Jazzy Sport"
+                ],
+                "singer": [
+                    "DJ Mitsu The Beats & DJ Mu-R"
+                ],
+                "pubdate": [
+                    "2007"
+                ],
+                "title": [
+                    "Sound Maneuvers"
+                ],
+                "media": [
+                    "Mix CD"
+                ],
+                "tracks": [
+                    "01. DJ Mitsu The Beats - So.Ma.Theme\n02. John Dankworth - Return From The Ashes\n03. Quasimoto - Astronaut\n04. DJ Design ft. Madlib & Quasimoto - Sparkdala Hodges, James & Smith - He Did Me Wrong, But He Did It Right\n05. The Popular People's Project - Limited Seres 01\n06. Pete Rock & C.L.Smooth - Shine On Me! (Inst)\n07. Montana - Warp Factor\n08. Momie-O - You're Welcome, Stop On By\n09. Ta'raach - Baaaby\n10. Common Sense - I Used To Love H.e.r\n11. Kombo - I Don't Stop\n12. Da Grassroots - Price Of Livin\n13. Black Star - Little Brother\n14. Bush Babees ft. Mos Def - The Love Song Groove Holmes - Onsaya\n15. Quasimoto - Basic Instinct\n16. Audio Two - Top Billin'\n17. Maspyke - Chillin\n18. Flying Lotus - shiFty\n19. Slum Village - Set It\n20. Ta'raach - Merci Me Lord\n21. Jazzmatazz ft. Bilal - Certified Klaus Wunderlich - Suger Me\n22. J Dilla - Won't Stop\n23. Umod - U Better Recognise\n24. Frankie Valentine - Marinheiro So (DJ Mitsu The Beats Rmx)\n25. Pete Kuzma ft. Bilal - High & Dry\n26. Gune Dunlap - It's Just The Way I Feel\n27. WJK - Musiq"
+                ]
+            },
+            "title": "Sound Maneuvers",
+            "alt": "https:\/\/music.douban.com\/subject\/3141580\/",
+            "id": "3141580"
+        },
+        {
+            "rating": {
+                "max": 10,
+                "average": "8.7",
+                "numRaters": 49,
+                "min": 0
+            },
+            "author": [
+                {
+                    "name": "R Kelly"
+                }
+            ],
+            "alt_title": "",
+            "image": "https://img3.doubanio.com\/spic\/s2663632.jpg",
+            "tags": [
+                {
+                    "count": 5,
+                    "name": "Shivaree"
+                },
+                {
+                    "count": 3,
+                    "name": "R&B"
+                },
+                {
+                    "count": 2,
+                    "name": "RKelly"
+                },
+                {
+                    "count": 1,
+                    "name": "0单曲"
+                },
+                {
+                    "count": 1,
+                    "name": "R.Kelly"
+                }
+            ],
+            "mobile_link": "https:\/\/m.douban.com\/music\/subject\/2221099\/",
+            "attrs": {
+                "publisher": [
+                    "Mushroom"
+                ],
+                "singer": [
+                    "R Kelly"
+                ],
+                "version": [
+                    "Single",
+                    "Import"
+                ],
+                "pubdate": [
+                    "1999-02-02"
+                ],
+                "title": [
+                    "Half on a Baby"
+                ],
+                "media": [
+                    "Audio CD"
+                ],
+                "tracks": [
+                    "Half On A Baby (Radio Ver",
+                    "Half On A Baby (Extended",
+                    "Half On A Baby (Instrumen"
+                ],
+                "discs": [
+                    "1"
+                ]
+            },
+            "title": "Half on a Baby",
+            "alt": "https:\/\/music.douban.com\/subject\/2221099\/",
+            "id": "2221099"
+        }
+    ]
+}
+
+var s;
+
+function de(){
+	//  $("#song").remove();
+}
+function a(){
+    window.s = document.getElementById('find');
+   console.log(document.getElementById('find').value);
+          		
+ // console.log('find.value');
+    var value = s.value;
+        $.ajax({
+        	url: 'https://api.douban.com/v2/music/search?q='+value,
+        	type:  'GET',
+        	dataType: 'jsonp',
+        	success: function (data) {
+        		//console.log(data);
+        		createHT(data);
+
+               	}
+       })
+           
+  //createHT(data);
+
+    function createHT(p){
+    	   console.log(p);
+          //   console.log(p.musics.lenth);
+             for(var i = 0;i<p.musics.length;i++){  
+               var j =0; j++;         
+                 // console.log(p.musics[i].image);
+                 // console.log(p.musics[i].title);
+                 	b(p.musics[i].image,p.musics[i].title,j+1)
+                }
+             }
+
+       }
+          function b(image,title,num){
+          
+              console.log(image);
+              console.log(title); 
+              console.log(num);
+             $('#song').after('<img>');
+             c(image,title,num);
+   }   
+          function c(image,title,num){
+               $('img:eq('+num+')').attr('src', image).attr('value', title);
+   }
+               
+$('#find').keydown(function(event){de();a();});
+
+
+</script>
+</body>
+</html> 
