@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style>
+		canvas{
+			border:1px solid black;
+		}
+	   
+	</style>
+</head>
+<body> 
+<canvas width=500 height=500></canvas>
+       
+<script>
+	var c = document.getElementsByTagName('canvas')[0];
+	var ctx=c.getContext("2d");
+    ctx.beginPath();
+    ctx.fillStyle="#666666";
+    ctx.fillRect(0,0,500,500); 
+    window.onmousemove = function (event) {
+    	var disX = event.clientX;
+    	var disY = event.clientY;
+    	 ctx.clearRect(disX-25, disY-25, 30, 30);
+    }
+</script>
+</body>
+</html>
