@@ -1,0 +1,35 @@
+
+<-- 第一个jq程序,虽然没什么功能但是很有纪念意义  -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>tabs</title>
+    <style>
+       #box{
+           width: 300px;
+           height: 300px;
+           border: 1px solid black;
+           background-color:white;
+       }
+    </style>
+</head>
+<body>
+    <button  onclick="l()">变大</button>
+    <button onclick='s()'>变小</button>
+    <button onclick='g()'>绿色</button>
+    <button onclick='r()'>红色</button>
+    <button onclick='b()'>蓝色</button>
+    <button onclick='i()'>恢复</button>
+    <div id="box"></div>
+    <script src='http://code.jquery.com/jquery-latest.js'></script>
+    <script>
+        function l() {$("#box").css({"width": "500px", "height": "500px"});}
+        function s() {$("#box").css({"width": "200px", "height": "200px"}); }
+        function g() { $("#box").css("background-color", "green").html("绿色"); }
+        function r() { $("#box").css("background-color", "red").html("红色"); }
+        function b() { $("#box").css("background-color", "blue").html("蓝色"); }
+        function i() { $("#box").css({"background-color":"white", "width": "300px", "height": "300px"}).html(" "); }
+    </script>
+</body>
+</html>
