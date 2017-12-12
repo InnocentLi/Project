@@ -11,16 +11,16 @@
   int randomNum=y.intValue();
   if(x>randomNum)
   {
-    out.print("大了 <a href=\"index.jsp\">再试一次</a>");
+    out.print("比之前数大 <a href=\"index.jsp\">再试一次</a>");
     
   }
   if(x<randomNum)
   {
-    out.print("小了<a href=\"index.jsp\">再试一次</a>");
+    out.print("比之前数小<a href=\"index.jsp\">再试一次</a>");
   }
   if(x==randomNum)
   {
-  out.print("对了 <a href=\"index.jsp\">再试一次</a>");
+  out.print("回答正确 <a href=\"index.jsp\">再试一次</a>");
   session.setAttribute("randomNumber",null);
   }
  %>
