@@ -7,20 +7,7 @@
 <title>j2ee--test2</title>
 </head>
 <body>
-<h1>九九乘法口诀表</h1>
 
-<%
-	for(int i=1;i<=9;i++) {
-	for(int j=1;j<=i;j++) {
-%>
-				<%=j%>x<%=i%>=<%=i*j%>
-			<%
-				}
-			%>
-			<br>
-		<%
-			}
-		%>
 
 <h1>网络计数器</h1>
 
