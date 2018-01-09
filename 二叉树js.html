@@ -1,3 +1,4 @@
+
 function Node(data,left,right) {
     this.data = data;
     this.left = left;
@@ -8,7 +9,7 @@ function Node(data,left,right) {
 function BST() {
     this.root = null;
     this.insert = insert;
-
+ //   this.inOrder = inOrder;
 }
 
 
@@ -21,6 +22,7 @@ function insert(data) {
         var parent;
         while(current) {
             parent = current;
+            parent.Father = current;
             if(data <  current.data) {
                 current = current.left;
                 if(current == null) {
@@ -54,19 +56,9 @@ nums.insert(20);
 nums.insert(5);
 nums.insert(19);
 nums.insert(43);
-
+nums.insert(454)
 
         //                  23
         //     16                    45
         // 3       20          37          99
         //   5  19                43    86    122      
-
-// function test(){
-// 　　　　this.y = 20
-// 　　}
-// 　　var o = {};
-// 　　o.x = 1;
-//     o.y = 5;
-// 　　o.m = test;
-// 　　o.m(); 
-//     console.log(o);
