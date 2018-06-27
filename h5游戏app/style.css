@@ -1,0 +1,131 @@
+/* 按钮样式 */
+.BeiginBtn{
+    width: 300px;
+    height: 52px;
+    top: 465px;
+    /* background: red; */
+    position: absolute;
+    left: 0.5rem;
+}
+
+/* 倒计时CSS */
+.Count{
+    position: absolute;
+    top: 138px;
+    left: 138px;
+    width: 98px;
+}
+/* 进度条css */
+#rand{
+    position: absolute;
+    left: 50%;
+    margin-left: -150px;
+    top:13px;
+    width: 300px;
+    height: 13px;
+    background: #ffdf40;
+    border-radius:30px;
+    border: 2px solid black;
+}
+
+#randChild{
+    width: 0%;
+    height: 13px;
+    background: #000;
+    border-radius:30px;
+}
+/* 题目选项 */
+
+#title{
+    position: absolute;
+    margin-left: -138px;
+    top:50px;
+    left: 50%;
+    text-align: center;
+    font-size: 0.16rem;
+    width: 276px;
+}
+
+.Option{
+    position: absolute;
+    text-align: center;
+    width:310px;
+    height: 70px;
+    left: 50%;
+    margin-left: -155px;
+    font-size: 27px;
+}
+.Option img{
+    position: absolute;
+    width:310px;
+}
+.Option p{
+    
+    position: relative;
+    top: 0.15rem;
+   
+}
+.OptionA{
+    top: 179px;
+}
+.OptionB{
+    top: 271px;     
+}
+.OptionC{
+    top: 363px; 
+}
+.OptionD{
+    top: 452px; 
+}
+
+
+#lesson{
+    position: absolute;
+    margin-left: -138px;
+    top:127px;
+    left: 50%;
+    text-align: center;
+    font-size: 0.12rem;
+    color: #fff;
+    width: 276px;
+}
+
+
+#source{
+    position: relative;
+    top: 1rem;
+    right: 1rem;
+    color: red;
+    font-size: 1rem;
+}
+
+#Btn1{
+    position: absolute;
+    width: 3rem;
+    height: 1rem;
+    top: 3rem;
+    background: red;
+}
+#Btn2{
+    position: absolute;
+    width: 3rem;
+    height: 1rem;
+    top: 5rem;
+    background: blue;
+}
+
+#Btn3{
+    position: absolute;
+    width: 3rem;
+    height: 1rem;
+    top: 4rem;
+    left: 2rem;
+    background: green;
+}
+
+#AD{
+    position: absolute;
+    width: 2.8rem;
+    left: 0.22rem;
+    top: 2.15rem;
+}
