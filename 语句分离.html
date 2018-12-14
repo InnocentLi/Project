@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>韩旭SB</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        #help{
+            border: 1px solid black;
+            width: 300px;
+            height: 30px;            
+        }
+    </style>
+</head>
+
+<body>
+    <h1>自动化测试工具v0.2</h1>
+    <p>填写需要提取的参数 如果有空格请务必加上空格和":"（或者= ）否则失效，请保证每个数据以空格为断点</p>
+    <p>需要提取的参数</p>
+    <input type="text" name="" id="help">
+    <p>
+        把需要测的东西放入text框中,注意必须每个参数和参数直接要有空格，否则需要修改代码
+    </p>
+    <input type="text" id="text" />
+
+    <button onclick="init()">生成</button>
+    <button onclick="done()">清空</button>
+
+    <h2>表格</h2>
+    <div id="root">
+        <table id="table">
+            <tr id="tr">
+
+            </tr>
+        </table>
+
+    </div>
+
+
+ 
+    <script lang="javascript">
+        // 创建数组，其实这么写没有太大的意义，在js中可以直接赋值为数组，便可以自动判断，有点类似于C++的auto
+        var arrover = new Array();
+        // 获取dom节点
+        var tr = document.getElementById("tr");
+        var text = document.getElementById("text");
+        var help = document.getElementById("help");
+
+
+        function init() {
+            console.log("dd")
+            var helparr = help.value.split(" ");// 根据空格进行提取
+            console.log(helparr);
+            var arr = text.value.split(" ");    // 根据空格进行提取
+            for (var i = 0; i < arr.length; i++) {
+                if(arr[i]==helparr[0]){
+                    for (var j = 0; j < helparr.length; j++) {
+                        if (arr[i + j] != helparr[j]) {
+                            continue;
+                        }   
+                    }
+                    tr.innerHTML += '<td>'+arr[i + helparr.length]+'</td>'
+                }   
+            }
+
+
+
+            selectText('table');     // 回调函数
+        }
+        function done() {
+            tr.innerHTML = "";
+            text.value = "";
+        }
+
+        function selectText(element) {    //实现自动选中功能
+            var text = document.getElementById(element);   //获取dom元素
+            if (document.body.createTextRange) {            // 查看是否存在body下面的的createTextRange方法
+                var range = document.body.createTextRange();   //唤起range方法
+                range.moveToElementText(text);                  // 利用moveToElementText方法
+                range.select();                                 //  触发选中方法    
+            } else if (window.getSelection) {                   //下面代码差不多
+                var selection = window.getSelection();
+                var range = document.createRange();
+                range.selectNodeContents(text);
+                selection.removeAllRanges();
+                selection.addRange(range);
+            } else {
+                alert(" 浏览器不支持，需要更换浏览器，建议下在谷歌浏览器");                              // 输出noen
+            }
+
+            document.execCommand("copy", false, null);                       //触发系统自带粘贴功能
+        }
+
+
+
+
+    </script>
+</body>
+
+</html>
