@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>工具(ワークシートなし)</title>
+    <style>
+      #page2 {
+        display: none;
+      }
+
+      #page3 {
+        display: none;
+      }
+  
+        .AnalysisInput{
+            width: 25px;
+        }
+        .AnalysisType{
+            width: 25px;
+        }
+        .AnalysisFieldName{
+            width: 230px;
+        }
+        .AnalysisLoop{
+            width: 25px;
+        }
+        .AnalysisSize{
+            width: 25px;
+        }
+
+
+
+        #FristStep{
+            display: block;
+        }
+        #SecondStep{
+            display: none;
+        }
+    </style>
+  </head>
+
+  <body>
+    <div>
+      <div id="PageBtn">
+        <button id="XMLBtn">XML機能自動化</button>
+        <button id="WorkSheetBtn">DM自動化</button>
+        <button id="OtherBtn">IO自動化</button>
+      </div>
+      <div id="page1">
+        <h3>Title</h3>
+        <span>例えば:RMS903</span> <input type="text" name="" id="code" />
+        <h3>FileNameTitle</h3>
+        <span>例えば:DM_RMS903</span>
+        <input type="text" name="filetitle" id="name" />
+
+        <h3>Cobol Data</h3>
+        <p>例えば:RMS903-683-S-IO PIC X(5)</p>
+        <p>RMS903-TRSA-SAS-DFC PIC X(5)</p>
+        <textarea name="command" id="command" cols="100" rows="10"></textarea>
+        <button id="triggerButton">運行</button><br />
+        <h3>XML DM Output</h3>
+        <div id="container"></div>
+        <br />
+      </div>
+      <div id="page2">
+    
+        <h1>Input</h1>
+        <div id="input-container"></div>
+        <div id="input-container2"></div>
+        <button id="FristStep" onclick="RenderFirstInput()">下一步(1/3)</button>
+        <button id="SecondStep" onclick="AnalysisAddIONaming()">下一步(2/3)</button>
+      </div>
+      <div id="page3">
+        <h1>ワークシート</h1>
+      </div>
+    </div>
+
+    <script>
+      //———————————文件初始化———————————————————————————————————————————————————————————————
+      const init = {
+        code: "",
+        name: "",
+      };
+
+      document.getElementById("code").addEventListener("input", (e) => {
+        init.code = e.target.value;
+      });
+      document.getElementById("name").addEventListener("input", (e) => {
+        init.name = e.target.value;
+      });
+
+
+
+      const CobolObj = [
+       
+      ];
+    //   {
+    //       no: "",
+    //       type: "",
+    //       fieldName: "",
+    //       loop: "",
+    //       size: "",
+    //     },
+      let noN = 0;
+
+      const AfterAnalysisDataHtmlTemplate = {
+
+      }
+      //———————————DM的XML出力————————————————————————————————————————————————————————————————
+      const DM_XML = {
+        DM_ITEM: {
+          code: `DM_${init.code}`, // DM_RMS280 作为DM的code代码
+          name: init.name, // DM的概要 比如受付ファイル职权等
+          dm_item_list: "",
+        },
+        // DM的画面加工
+        DM_DATA_IN: "",
+        // DM的DATA分割
+        DM_DATA_OUT: "",
+      };
+
+      // 对BP 按钮的名字初始化
+      const BP_ACTION_NAME = {
+        name: "",
+      };
+
+      const Cobol = {
+        CobolSource: "",
+        CobolSourceName: "",
+        CobolSourceLength: "",
+      };
+      // DM Temlate
+      const DM_XML_Template = `
+                <?xml version = "1.0"  encoding = "UTF-8" ?>
+                <dm>
+                    <tool-version>2.5.4.0</tool-version>
+                    <code>DM_${DM_XML.DM_ITEM.code}</code>
+                    <name>${DM_XML.DM_ITEM.name}</name>
+                    <is-disable>false</is-disable>
+                    <creator>tools</creator>
+                    <create-time>2024-02-02 08:18:18.0</create-time>
+                    <dm-item-list>${DM_XML.DM_ITEM.dm_item_list}</dm-item-list>
+                </dm>
+      `;
+      // DATA 普通模板
+      const DM_XML_item_Template = `
+              <dm-item> 
+                      <dm-code>${DM_XML.DM_ITEM.code}</dm-code>
+                      <code>${Cobol.CobolSource}</code>
+                      <name>${Cobol.CobolSourceName}</name>
+                      <length>${Cobol.CobolSourceLength}</length>
+                      <byteSize>0</byteSize>
+                      <scale>0</scale>
+                      <is-nullable>false</nullable>
+                      <key-group>0</key-group>
+                      <data-type>TEXT</data-type>
+                      <is-disable>false</is-disable>
+                      <creator>tools</creator>
+                      <create-time>2024-02-02 08:18:18.0</create-time>
+                      <dm-item-prop-list/>
+              </dm-item>
+      `;
+
+      //对data的特殊处理，单独模板
+      const DM_XML_item_Template_DATA = `
+                <dm-item>
+                        <dm-code>${DM_XML.DM_ITEM.code}</dm-code>
+                        <code>${Cobol.CobolSource}</code>
+                        <name>${Cobol.CobolSourceName}</name>
+                        <length>${Cobol.CobolSourceLength}</length>
+                        <byteSize>0</byteSize>
+                        <scale>0</scale>
+                        <is-nullable>false</nullable>
+                        <key-group>0</key-group>
+                        <data-type>TEXT</data-type>
+                        <is-disable>false</is-disable>
+                        <creator>tools</creator>
+                        <create-time>2024-02-02 08:18:18.0</create-time>
+                        <dm-item-prop-list/>
+                </dm-item>
+      `;
+
+      //对data的特殊处理，单独模板
+      const DM_XML_item_Template_INIT = `
+                <dm-item>
+                        <dm-code>${DM_XML.DM_ITEM.code}</dm-code>
+                        <code>${Cobol.CobolSource}</code>
+                        <name>${Cobol.CobolSourceName}</name>
+                        <length>${Cobol.CobolSourceLength}</length>
+                        <byteSize>0</byteSize>
+                        <scale>0</scale>
+                        <is-nullable>false</nullable>
+                        <key-group>0</key-group>
+                        <data-type>TEXT</data-type>
+                        <is-disable>false</is-disable>
+                        <creator>tools</creator>
+                        <create-time>2024-02-02 08:18:18.0</create-time>
+                        <dm-item-prop-list/>
+                </dm-item>
+      `;
+      // BP　INIT　初始化项目
+      const BP_XML_INIT = `
+            <?xml version = "1.0" encoding = "UTF-8" ?>
+                <bp>
+                    <tool-version>2.5.4.0</tool-version>
+                    <code>BP_${init.code}_INIT</code>
+                    <name>初期表示</name>
+                    <is-commit>false</is-commit>
+                    <is-disable>false</is-disable>
+                    <creator>eclipse</creator>
+                    <create-time>2024-05-17 16:19:06.0</create-time>
+                    <bp-logic-list>
+                        <bp-logic>BP_${init.code}_INIT</bp-logic>
+                    </bp-logic-list>
+                </bp>
+      `;
+
+      // BP ACTION 专用模板
+
+      const BP_XML_ACTION = `
+        <xml version="1.0" encoding="UTF-8"?>
+        <bp>
+            <tool-version>2.5.4.0</tool-version>
+            <code>BP_RMS230_ENTER</code>
+            <name>実行</name>
+            <is-commit>false</is-commit>
+            <is-disable>false</is-disable>
+            <creator>eclipse</creator>
+            <create-time>2024-05-17 16:23:54.0</create-time>
+            <bp-logic-list>
+                <bp-logic>
+                    <bp-code>BP_RMS230_ENTER</bp-code>
+                    <level>0</Level>
+                    <ctrl-code>IN</ctrl-code>
+                    <dm-code>DM_RMS230</dm-code>
+                    <work-code>ENT</work-code>
+                    <is-disable>false</is-disable>
+                    <creator>eclipse</creator>
+                    <create-time>2024-05-17 16:27:26.0</create-time>
+                </bp-logic>
+                <bp-logic>
+                    <bp-code>BP_RMS230_ENTER</bp-code>
+                    <Level>0</Level>
+                    <ctrl-code>ARG</ctrl-code>
+                    <func-code>CODE</func-code>
+                    <work-code>IOCODE</work-code>
+                    <is-disable>false</is-disable>
+                    <creator>eclipse</creator>
+                    <create-time>2024-05-17 16:27:26.0</create-time>
+                </bp-logic>
+                <bp-logic>
+                    <bp-code>BP_RMS230_ENTER</bp-code>
+                    <Level>0</Level>
+                    <ctrl-code>ARG</ctrl-code>
+                    <func-code>TEXT</func-code>
+                    <work-code>ACTION</work-code>
+                    <is-disable>false</is-disable>
+                    <creator>eclipse</creator>
+                    <create-time>2024-05-17 16:27:26.0</create-time>
+                </bp-logic>
+                <bp-logic>
+                    <bp-code>BP_RMS230_ENTER</bp-code>
+                    <Level>0</Level>
+                    <ctrl-code>CALL</ctrl-code>
+                    <dm-code>DM_RMS230</dm-code>
+                    <func-code>RMS230_DATA_IN</func-code>
+                    <param>ENT</param>
+                    <work-code>IN</work-code>
+                    <is-disable>false</is-disable>
+                    <creator>eclipse</creator>
+                    <create-time>2024-05-17 16:27:26.0</create-time>
+                </bp-logic>
+                <bp-logic>
+                    <bp-code>BP_RM5230_ENTER</bp-code>
+                    <Level>0</Level>
+                    <ctrl-code>CALL</ctrl-code>
+                    <dm-code>DM_KYOUTSU_FRENKEI_IN</dm-code>
+                    <func-code>DATAction</func-code>
+                    <work-code>DATA1</work-code>
+                    <is-disable>false</is-disable>
+                    <creator>eclipse</creator>
+                    <create-time>2024-05-20 23:40:39.0</create-time>
+                </bp-logic>
+                <bp-logic>
+                    <bp-code>BP_RMS230_ENTER</bp-code>
+                    <Level>0</Level>
+                    <ctrl-code>CALL</ctrl-code>
+                    <dm-code>DM_KYOUTSU_FRENKEI_IN</dm-code>
+                    <func-code>INPUT</func-code>
+                    <param>TEXT(_ARG_.ACTION),_ARG_.IOCODE,DATA1.DATA&amp;REPEAT(' ',30967-LEN(DATA1.DATA))</param>
+                    <work-code>ExtIn</work-code>
+                    <is-disable>false</is-disable>
+                    <creator>eclipse</creator>
+                    <create-time>2024-05-20 23:40:39.0</create-time>
+                </bp-logic>
+                <bp-logic>
+                    <bp-code>BP_RMS230_ENTER</bp-code>
+                    <Level>0</Level>
+                    <ctrl-code>INVOKE</ctrl-code>
+                    <dm-code>DM_KYOUTSU_FRENKEI_OUT</dm-code>
+                    <func-code>EXT_CobolCooperation</func-code>
+                    <param>ExtIn</param>
+                    <work-code>ExtOut</work-code>
+                    <is-disable>false</is-disable>
+                    <creator>eclipse</creator>
+                    <create-time>2024-05-20 23:48:21.0</create-time>
+                </bp-logic>
+                <bp-logic>
+                    <bp-code>BP_RMS230_ENTER</bp-code>
+                    <Level>0</Level>
+                    <ctrl-code>IF</ctrl-code>
+                    <param>ExtOut.MSG&lt;&gt;TEXT('')</param>
+                    <work-code>Check</work-code>
+                    <is-disable>false</is-disable>
+                    <creator>eclipse</creator>
+                    <create-time>2024-05-20 23:48:21.0</create-time>
+                </bp-logic>
+                <bp-logic>
+                    <bp-code>BP_RMS230_ENTER</bp-code>
+                    <Level>1</Level>
+                    <ctrl-code>CALL</ctrl-code>
+                    <dm-code>DM_KYOUTSU_FRENKEI_OUT</dm-code>
+                    <func-code>MSG_DISP</func-code>
+                    <param>ExtOut.MSG</param>
+                    <work-code>Check</work-code>
+                    <is-disable>false</is-disable>
+                    <creator>eclipse</creator>
+                    <create-time>2024-05-20 23:48:21.0</create-time>
+                </bp-logic>
+                <bp-logic>
+                    <bp-code>BP_RMS230_ENTER</bp-code>
+                    <Level>0</Level>
+                    <ctrl-code>END</ctrl-code>
+                    <work-code>Check</work-code>
+                    <is-disable>false</is-disable>
+                    <creator>eclipse</creator>
+                    <create-time>2024-05-20 23:48:21.0</create-time>
+                </bp-logic>
+                <bp-logic>
+                    <bp-code>BP_RMS230_ENTER</bp-code>
+                    <Level>0</Level>
+                    <ctrl-code>OUT</ctrl-code>
+                    <dm-code>DM_KYOUTSU_FRENKEI_OUT</dm-code>
+                    <work-code>ExtOut</work-code>
+                    <is-disable>false</is-disable>
+                    <creator>eclipse</creator>
+                    <create-time>2024-05-20 23:48:21.0</create-time>
+                </bp-logic>
+            </bp-logic-list>
+        </bp>
+    `;
+
+      //———————————DOM 添加事件集合及其处理————————————————————————————————————————————————————————————
+      //DOM 添加事件集合及其处理
+      document.addEventListener("DOMContentLoaded", () => {
+        const PageBtn = document.getElementById("PageBtn");
+        PageBtn.addEventListener("click", ChangePage);
+
+        // const triggerButton = document.getElementById("triggerButton");
+        // triggerButton.addEventListener("click", handleTriggerClick);
+
+        // const removeLButton = document.getElementById("removeLButton");
+        // removeLButton.addEventListener("click", handleRemoveLClick);
+      });
+      // Page 切换 DOM
+      function ChangePage(e) {
+        const page1 = document.getElementById("page1");
+        const page2 = document.getElementById("page2");
+        const page3 = document.getElementById("page3");
+
+        if (e.target.id == "XMLBtn") {
+          page1.style.display = "block";
+          page2.style.display = "none";
+          page3.style.display = "none";
+        } else if (e.target.id == "WorkSheetBtn") {
+          page1.style.display = "none";
+          page2.style.display = "block";
+          page3.style.display = "none";
+        } else if (e.target.id == "OtherBtn") {
+          page1.style.display = "none";
+          page2.style.display = "none";
+          page3.style.display = "block";
+        } else {
+        }
+      }
+      //—————————————————————————————————————————————————————————————————————————————————————————————
+
+      console.log(DM_XML_Template);
+
+      //—————————————————————————————————————————————————————————————————————————————————————————————
+
+      // Test
+      const data = `
+          24913   C1   000900*    05  RMS230-SHSE-SIJ-CDL       PIC  S9(004) COMP.             D01AJ112 
+          24914   C1              05  RMS230-SHSE-SIJ-CDL       PIC  S9(004) COMP VALUE ZERO.  I01AJ112 
+          24915   C1   001000*    05  RMS230-SHSE-SIJ-CD-I      PIC  X(001).                   D01MJ112 
+          24916   C1              05  RMS230-SHSE-SIJ-CD-I      PIC  X(001) VALUE SPACE.       I01MJ112 *80800,Q81300,Q85700,Q86900,*87200,
+                                                                                                        Q92000,Q93100,Q93300,Q95500,130900,
+                                                                                                        Q131200
+          24917   C1   001100*    05  RMS230-STGNN-SNSID-JTCDL  PIC  S9(004) COMP.             D01AJ112 
+          24918   C1              05  RMS230-STGNN-SNSID-JTCDL  PIC  S9(004) COMP VALUE ZERO.  I01AJ112 
+          24919   C1   001200*    05  RMS230-STGNN-SNSID-JTCD-I PIC  X(001).                   D01MJ112 
+          24920   C1              05  RMS230-STGNN-SNSID-JTCD-I PIC  X(001) VALUE SPACE.       I01MJ112 Q78200,Q84000,Q96400,97000,99100,
+                                                                                                        134100
+          24921   C1   001300*    05  RMS230-STGNN-SNSNN-IDL    PIC  S9(004) COMP.             D01AJ112 
+          24922   C1              05  RMS230-STGNN-SNSNN-IDL    PIC  S9(004) COMP VALUE ZERO.  I01AJ112 
+          24923   C1   001400*    05  RMS230-STGNN-SNSNN-ID-I   PIC  X(009).                   D01MJ112 
+          24924   C1              05  RMS230-STGNN-SNSNN-ID-I   PIC  X(009) VALUE SPACE.       I01MJ112 Q78300,Q84100,Q97500,Q98100,Q116600,
+                                                                                                        116900,Q117200,133500
+          24925   C1   001500*    05  RMS230-STGNN-KKSK-JTCDL   PIC  S9(004) COMP.             D01AJ112 
+          24926   C1              05  RMS230-STGNN-KKSK-JTCDL   PIC  S9(004) COMP VALUE ZERO.  I01AJ112 
+          24927   C1   001600*    05  RMS230-STGNN-KKSK-JTCD-I  PIC  X(001).                   D01MJ112 
+          24928   C1              05  RMS230-STGNN-KKSK-JTCD-I  PIC  X(001) VALUE SPACE.       I01MJ112 Q78400,Q84200,Q100300,100900,104600,
+                                                                                                        134300
+          24929   C1   001700*    05  RMS230-STGNN-KSCDL        PIC  S9(004) COMP.             D01AJ112 
+          24930   C1              05  RMS230-STGNN-KSCDL        PIC  S9(004) COMP VALUE ZERO.  I01AJ112 
+          24931   C1   001800*    05  RMS230-STGNN-KSCD-I       PIC  X(002).                   D01MJ112 
+          24932   C1              05  RMS230-STGNN-KSCD-I       PIC  X(002) VALUE SPACE.       I01MJ112 Q78500,Q84300,Q101300,Q101900,Q102300,
+                                                                                                        102900,133700
+          24933   C1   001900*    05  RMS230-STGNN-SHM-JTCDL    PIC  S9(004) COMP.             D01AJ112 
+          24934   C1              05  RMS230-STGNN-SHM-JTCDL    PIC  S9(004) COMP VALUE ZERO.  I01AJ112 
+          24935   C1   002000*    05  RMS230-STGNN-SHM-JTCD-I   PIC  X(001).                   D01MJ112 
+          24936   C1              05  RMS230-STGNN-SHM-JTCD-I   PIC  X(001) VALUE SPACE.       I01MJ112 Q78600,Q84400,Q105800,106400,109100,
+                                                                                                        134500
+          24937   C1   002100*    05  RMS230-STGNN-SHML         PIC  S9(004) COMP.             D01AJ112 
+          24938   C1              05  RMS230-STGNN-SHML         PIC  S9(004) COMP VALUE ZERO.  I01AJ112 
+          24939   C1   002200     05  FILLER                    OCCURS 005  TIMES.                      
+          24940   C1   002300       06  RMS230-STGNN-SHM-I      PIC  N(040).                            Q78700,Q78800,Q78900,Q79000,Q79100,
+                                                                                                        Q84500,Q84600,Q84700,Q84800,Q84900,
+                                                                                                        107000
+          24941   C1   002400*    05  RMS230-STGNN-ADR-JTCDL    PIC  S9(004) COMP.             D01AJ112 
+          24942   C1              05  RMS230-STGNN-ADR-JTCDL    PIC  S9(004) COMP VALUE ZERO.  I01AJ112 
+          24943   C1   002500*    05  RMS230-STGNN-ADR-JTCD-I   PIC  X(001).                   D01MJ112 
+          24944   C1              05  RMS230-STGNN-ADR-JTCD-I   PIC  X(001) VALUE SPACE.       I01MJ112 Q79200,Q85000,Q110300,110900,112800,
+                                                                                                        134700
+          24945   C1   002600*    05  RMS230-STGNN-ADRL         PIC  S9(004) COMP.             D01AJ112 
+          24946   C1              05  RMS230-STGNN-ADRL         PIC  S9(004) COMP VALUE ZERO.  I01AJ112 
+          24947   C1   002700     05  FILLER                    OCCURS 005  TIMES.                      
+          24948   C1   002800       06  RMS230-STGNN-ADR-I      PIC  N(040).                            Q79300,Q79400,Q79500,Q79600,Q79700,
+                                                                                                        Q85100,Q85200,Q85300,Q85400,Q85500,
+                                                                                                        111500
+                      025000                                                             SKIP1         
+                      025100*D   颊仑指 圯?下踢                                                       
+                      025200                                   COPY RMS230O.                           
+          25201   C1   000100 01  RMS230O.                                                              63900
+          25202   C1   000200   02  RMS230L                     PIC  S9(004) COMP VALUE +1050. V03-001  
+          25203   C1   000300   02  RMS230Z                     PIC  S9(004) COMP VALUE +0000.          
+          25204   C1   000400   02  RMS230OG.                                                           *39900,*145600
+          25205   C1   000500*    05  RMS230-CNTRL              PIC  X(004).                   D01MJ112 
+          25206   C1              05  RMS230-CNTRL              PIC  X(004) VALUE SPACE.       I01MJ112 *42400,*42800,*147900
+          25207   C1   000600*    05  RMS230-OUTCURS-LIN        PIC  S9(004) COMP.             D01AJ112 
+          25208   C1              05  RMS230-OUTCURS-LIN        PIC  S9(004) COMP VALUE ZERO.  I01AJ112 *62400,*153000,*154500,*155900,*157300
+                                                                                                        ,*158700,*160100,*161500,*162900,
+                                                                                                        *164300,*165900
+          25209   C1   000700*    05  RMS230-OUTCURS-COL        PIC  S9(004) COMP.             D01AJ112 
+          25210   C1              05  RMS230-OUTCURS-COL        PIC  S9(004) COMP VALUE ZERO.  I01AJ112 *62200,*152800,*154300,*155700,*157100
+                                                                                                        ,*158500,*159900,*161300,*162700,
+                                                                                                        *164100,*165700
+          25211   C1   000800*    05  RMS230-FOCUS-LIN          PIC  X(002).                   D01MJ112 
+          25212   C1              05  RMS230-FOCUS-LIN          PIC  X(002) VALUE SPACE.       I01MJ112 *61900,*153200,*166100
+          25213   C1   000900*    05  RMS230-MSG-52-DFC         PIC  X(006).                   D01MJ112 
+          25214   C1              05  RMS230-MSG-52-DFC         PIC  X(006) VALUE SPACE.       I01MJ112 *169200
+          25215   C1   001000     05  RMS230-MSG-52-O           PIC  N(052).                            *40000,*169300,*169500
+          25216   C1   001100     05  RMS230-T4P-MES-O          PIC  N(002).                            *51700
+          25217   C1   001150     05  RMS230-STGNO-K1-O         PIC  N(011).                   V03-001  *53900,*54100
+          25218   C1   001200     05  RMS230-UKTNO-K-O          PIC  N(011).                            *55600
+          25219   C1   001300     05  RMS230-NNSU-CHU-NNSU-BNB-O                                        *57700
+          25220   C1   001400                                   PIC  N(002).                            
+          25221   C1   001500     05  RMS230-NNSU-ME-NNSU-BNS-O PIC  N(002).                            *59200
+          25222   C1   001600*    05  RMS230-SHSE-SIJ-CD-DFC    PIC  X(006).                   D01MJ112 
+          25223   C1              05  RMS230-SHSE-SIJ-CD-DFC    PIC  X(006) VALUE SPACE.       I01MJ112 *152000
+          25224   C1   001700*    05  RMS230-SHSE-SIJ-CD-O      PIC  X(001).                   D01MJ112 
+          25225   C1              05  RMS230-SHSE-SIJ-CD-O      PIC  X(001) VALUE SPACE.       I01MJ112 *59500
+          25226   C1   001800     05  RMS230-STGNN-SNSID-JTCD-DFC                                       *153500
+          25227   C1   001900                                   PIC  X(006).                            
+          25228   C1   002000*    05  RMS230-STGNN-SNSID-JTCD-O PIC  X(001).                   D01MJ112 
+          25229   C1              05  RMS230-STGNN-SNSID-JTCD-O PIC  X(001) VALUE SPACE.       I01MJ112 *59800
+          25230   C1   002100*    05  RMS230-STGNN-SNSNN-ID-DFC PIC  X(006).                   D01MJ112 
+          25231   C1              05  RMS230-STGNN-SNSNN-ID-DFC PIC  X(006) VALUE SPACE.       I01MJ112 *154800
+          25232   C1   002200*    05  RMS230-STGNN-SNSNN-ID-O   PIC  X(009).                   D01MJ112 
+          25233   C1              05  RMS230-STGNN-SNSNN-ID-O   PIC  X(009) VALUE SPACE.       I01MJ112 *60000
+          25234   C1   002300     05  RMS230-STGNN-KKSK-JTCD-DFC                                        *156200
+          25235   C1   002400                                   PIC  X(006).                            
+          25236   C1   002500*    05  RMS230-STGNN-KKSK-JTCD-O  PIC  X(001).                   D01MJ112 
+          25237   C1              05  RMS230-STGNN-KKSK-JTCD-O  PIC  X(001) VALUE SPACE.       I01MJ112 *60300
+          25238   C1   002600*    05  RMS230-STGNN-KSCD-DFC     PIC  X(006).                   D01MJ112 
+          25239   C1              05  RMS230-STGNN-KSCD-DFC     PIC  X(006) VALUE SPACE.       I01MJ112 *157600
+          25240   C1   002700*    05  RMS230-STGNN-KSCD-O       PIC  X(002).                   D01MJ112 
+          25241   C1              05  RMS230-STGNN-KSCD-O       PIC  X(002) VALUE SPACE.       I01MJ112 *60500
+          25242   C1   002800*    05  RMS230-STGNN-SHM-JTCD-DFC PIC  X(006).                   D01MJ112 
+          25243   C1              05  RMS230-STGNN-SHM-JTCD-DFC PIC  X(006) VALUE SPACE.       I01MJ112 *159000
+          25244   C1   002900*    05  RMS230-STGNN-SHM-JTCD-O   PIC  X(001).                   D01MJ112 
+          25245   C1              05  RMS230-STGNN-SHM-JTCD-O   PIC  X(001) VALUE SPACE.       I01MJ112 *60800
+          25246   C1   003000*    05  RMS230-STGNN-SHM-DFC      PIC  X(006).                   D01MJ112 
+          25247   C1              05  RMS230-STGNN-SHM-DFC      PIC  X(006) VALUE SPACE.       I01MJ112 *160400
+          25248   C1   003100     05  FILLER                    OCCURS 005  TIMES.                      
+          25249   C1   003200       06  RMS230-STGNN-SHM-O      PIC  N(040).                            *61500
+          25250   C1   003300*    05  RMS230-STGNN-ADR-JTCD-DFC PIC  X(006).                   D01MJ112 
+          25251   C1              05  RMS230-STGNN-ADR-JTCD-DFC PIC  X(006) VALUE SPACE.       I01MJ112 *161800
+          25252   C1   003400*    05  RMS230-STGNN-ADR-JTCD-O   PIC  X(001).                   D01MJ112 
+          25253   C1              05  RMS230-STGNN-ADR-JTCD-O   PIC  X(001) VALUE SPACE.       I01MJ112 *61000
+          25254   C1   003500*    05  RMS230-STGNN-ADR-DFC      PIC  X(006).                   D01MJ112 
+          25255   C1              05  RMS230-STGNN-ADR-DFC      PIC  X(006) VALUE SPACE.       I01MJ112 *163200
+          25256   C1   003600     05  FILLER                    OCCURS 005  TIMES.                      
+          25257   C1   003700       06  RMS230-STGNN-ADR-O      PIC  N(040).                            *61600
+`;
+
+
+// 数据分析 No1
+      function isTest(data, matchString) {
+        const lines = data.trim().split("\n");
+        const regex =
+          /^\s*\d+\s+C1\s+(?:\d+\*?)?\s+(\d+)\s+(\S+)\s+PIC\s+([XNS9]|S9)\((\d+)\)(?:\s+COMP-?\d*)?(?:\s+VALUE\s+(?:ZERO|SPACE))?\.?/;
+        const regex2 = /-O$|-DFC$|-I$/;
+        const occursRegex = /OCCURS\s+(\d+)\s+TIMES/;
+        const picPattern = /PIC\s+(X\(\d+\))/;
+
+        let tableHTML = `<table style="width: 100%; border-collapse: collapse; font-size: 10px;" border="1">`;
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i];
+          let rowHTML = "<tr>";
+          const columns = line.match(/(\S+\s*)/g);
+          const ispicPattern = line.match(picPattern);
+          if (columns.length > 2 && columns[2].includes("*")) {
+            rowHTML += `<td style="white-space: pre-wrap; background-color: gray;">${line}</td>`;
+            rowHTML += `<td style="white-space: pre-wrap; background-color: gray;"></td>
+                        <td style="white-space: pre-wrap; background-color: gray;"></td>
+                        <td style="white-space: pre-wrap; background-color: gray;"></td>
+                        <td style="white-space: pre-wrap; background-color: gray;"></td>`;
+          } else {
+            const match = line.match(regex);
+            if (match) {
+              const [, level, fieldName, type, size] = match;
+
+              rowHTML += `<td style="white-space: pre-wrap; background-color: yellow;">${line}</td>`;
+              if (regex2.test(fieldName)) {
+                const sign = /-O$/.test(fieldName)
+                  ? "O"
+                  : /-DFC$/.test(fieldName)
+                  ? "DFC"
+                  : /-I$/.test(fieldName)
+                  ? "I"
+                  : "";
+                rowHTML += `
+                <td style="white-space: pre-wrap; background-color: yellow;">${sign}</td>
+                <td style="white-space: pre-wrap; background-color: yellow;">${fieldName}</td>
+                <td style="white-space: pre-wrap; background-color: yellow;"></td>
+                <td style="white-space: pre-wrap; background-color: yellow;">${size}</td>
+              `;
+                CoboltoObj(sign, fieldName, 0, size);
+              } else {
+                rowHTML += `
+                <td style="white-space: pre-wrap; background-color: yellow;"></td>
+                <td style="white-space: pre-wrap; background-color: yellow;"></td>
+                <td style="white-space: pre-wrap; background-color: yellow;"></td>
+                <td style="white-space: pre-wrap; background-color: yellow;"></td>
+              `;
+              }
+            } else if (occursRegex.test(line)) {
+              const occursMatch = line.match(occursRegex);
+              const occursCount = occursMatch[1];
+              CoboltoObj("", "", occursCount, "");
+              rowHTML += `<td style="white-space: pre-wrap; background-color: lightblue;">${line}</td>`;
+              rowHTML += `<td style="white-space: pre-wrap; background-color: lightblue;"></td>
+                            <td style="white-space: pre-wrap; background-color: lightblue;"></td>
+                            <td style="white-space: pre-wrap; background-color: lightblue;">${occursCount}</td>
+                            <td style="white-space: pre-wrap; background-color: lightblue;"></td>`;
+            } else if (ispicPattern) {
+              //遇到上两行出问题的
+
+              let prefix = matchString; // 可变变量
+
+              // 使用模板字符串动态构建正则表达式
+              const pattern = new RegExp(`(${prefix}\\S*)`);
+              const match = lines[i - 1].match(pattern);
+
+              let testString;
+              let testStringending;
+              if (match) {
+                testString = match[1]; // 从正则表达式匹配结果中获取第一个捕获组
+                testStringending = testString.split("-").pop();
+              } else {
+                alert("error");
+              }
+
+              const picPattern = /PIC\s+\w+\((\d+)\)/;
+              const match2 = line.match(picPattern);
+              let picNumber;
+              if (match2) {
+                picNumber = match2[1];
+              } else {
+                alert("error");
+              }
+              rowHTML += `<td style="white-space: pre-wrap; background-color: red;">${line}</td>`;
+              rowHTML += `<td style="white-space: pre-wrap; background-color: red;">${testStringending}</td>
+                            <td style="white-space: pre-wrap; background-color: red;">${testString}</td>
+                            <td style="white-space: pre-wrap; background-color: red;"></td>
+                            <td style="white-space: pre-wrap; background-color: red;">${picNumber}</td>`;
+              CoboltoObj(testStringending, testString, 0, picNumber);
+            } else {
+              rowHTML += `<td style="white-space: pre-wrap; background-color: yellow;">${line}</td>`;
+              rowHTML += `<td style="white-space: pre-wrap; background-color: yellow;"></td>
+                            <td style="white-space: pre-wrap; background-color: yellow;"></td>
+                            <td style="white-space: pre-wrap; background-color: yellow;"></td>
+                            <td style="white-space: pre-wrap; background-color: yellow;"></td>`;
+            }
+          }
+
+          rowHTML += "</tr>";
+          tableHTML += rowHTML;
+        }
+
+        tableHTML += "</table>";
+        return tableHTML;
+      }
+     
+      document.getElementsByTagName("body")[0].innerHTML += isTest(
+        data,
+        "RMS230"
+      );
+    // Cobol Obj创造函数
+      function CoboltoObj(type, fieldName, loop, size) {
+        noN++;
+        if (loop) {
+          CobolObj.push({
+            noN,
+            type: "",
+            fieldName: "请手动查看循环下一行",
+            loop,
+            size,
+          });
+        } else {
+          CobolObj.push({ noN, type, fieldName, loop, size });
+        }
+      }
+      console.log(CobolObj);
+
+
+// 数据分析后Input框处理
+    function  AnalysisInputRowFrist(item) {
+        const row = document.createElement('div');
+        row.innerHTML = `
+            <input type="text" class="AnalysisNoN AnalysisInput" value="${item.noN}" disabled>
+            <input type="text" class="AnalysisType AnalysisInput" value="${item.type}">
+            <input type="text" class="AnalysisFieldName AnalysisInput" value="${item.fieldName}">
+            <input type="text" class="AnalysisLoop AnalysisInput" value="${Number(item.loop)}">
+            <input type="text" class="AnalysisSize AnalysisInput" value="${Number(item.size)}">
+            <button onclick="AnalysisdeleteRow(this)">Delete</button>
+        `;
+
+        return row;
+    }
+
+    function AnalysisdeleteRow(button) {
+        button.parentElement.remove();
+    }
+
+    const container = document.getElementById('input-container');
+    function RenderFirstInput(){
+        document.getElementById("FristStep").style.display = "none";
+        document.getElementById("SecondStep").style.display = "block";
+        CobolObj.forEach(item => {
+        const row = AnalysisInputRowFrist(item);
+        container.appendChild(row);
+        });
+    }
+
+
+    function RenderSecondInput(){
+      
+    }
+
+    </script>
+  </body>
+</html>
